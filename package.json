@@ -1,0 +1,13 @@
+{
+  "name": "gobblecube-issue-form",
+  "version": "1.0.0",
+  "description": "Public client-facing form that creates issue tickets in the GobbleCube ClickUp Bug backlog list.",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  }
+}
