@@ -363,11 +363,13 @@ const FIELDS = {
   PLATFORMS_MULTI:  'b83a1232-c4ea-41d9-b4aa-ad3e5f960dc7', // labels (multi) — from platform pick
   RAISED_BY_CLIENT: 'a93057bb-c6cd-4645-8522-4258fb485b8d', // dropdown — auto: Yes
   SUBMITTED_BY:     '264f45b2-bf5a-40c3-84b3-ba706c29ea48', // email — optional reporter email
+  TEAMS:            '1a102912-62cc-4477-9e40-27f9a644e25d', // dropdown — auto: Performance marketing
 };
 const OPTIONS = {
   ISSUE_BUCKET_CSM_PERF_MKT: '43370937-d8a9-4bbe-92d6-76c2dde10cd4',
   CLIENT_TYPE_SMB:           '93eb4690-5c0e-45eb-9e06-a263209f4a3a',
   RAISED_BY_CLIENT_YES:      'd27eb925-a95e-472e-bc8b-6277120bfe7a',
+  TEAMS_PERF_MKT:            'ff9ae75d-f1bb-45e0-aa3e-6b7223e9dc77',
 };
 // Platforms Multi Select option IDs
 const PLATFORM_OPT = {
@@ -631,6 +633,7 @@ document.getElementById('issueForm').addEventListener('submit', async e => {
   customFields.push({ id: FIELDS.CLIENT_TYPE,      value: OPTIONS.CLIENT_TYPE_SMB });
   customFields.push({ id: FIELDS.COMPANY_NAME,     value: client });
   customFields.push({ id: FIELDS.RAISED_BY_CLIENT, value: OPTIONS.RAISED_BY_CLIENT_YES });
+  customFields.push({ id: FIELDS.TEAMS,            value: OPTIONS.TEAMS_PERF_MKT });
 
   // Perf Module — derived from selected sub-module (if any), else fallback by feature bucket
   let perfModule = null;
