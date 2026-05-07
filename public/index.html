@@ -256,7 +256,7 @@
   <form id="issueForm" novalidate>
     <div class="field">
       <label for="clientName">Brand / Client Name <span class="req">*</span></label>
-      <input type="text" id="clientName" placeholder="e.g. Slurrp Farm" required />
+      <input type="text" id="clientName" required />
     </div>
 
     <div class="field">
@@ -280,7 +280,7 @@
     <div class="field">
       <label for="csm">CSM <span class="req">*</span></label>
       <select id="csm" required>
-        <option value="">Select CSM…</option>
+        <option value="" disabled selected hidden>Select CSM…</option>
         <option value="Deepanshu Sharma">Deepanshu Sharma</option>
         <option value="Sahiba Kumar">Sahiba Kumar</option>
         <option value="Chirag Arora">Chirag Arora</option>
@@ -293,32 +293,22 @@
     <div class="field">
       <label>Issue Category <span class="req">*</span></label>
       <div class="cascade-row">
-        <select id="featureBucket" required><option value="">Select feature area…</option></select>
-        <select id="subModule" required disabled><option value="">Select sub-module…</option></select>
+        <select id="featureBucket" required><option value="" disabled selected hidden>Select feature area…</option></select>
+        <select id="subModule" required disabled><option value="" disabled selected hidden>Select sub-module…</option></select>
       </div>
-      <select id="issueTitle" required disabled><option value="">Select specific issue…</option></select>
-      <div id="metaCard" class="meta-card">
-        <div><strong id="metaTitle"></strong></div>
-        <div class="meta-row">
-          <div class="item"><span class="lbl">Severity</span><span id="metaSev" class="badge"></span></div>
-          <div class="item"><span class="lbl">SLA</span><span id="metaSla"></span></div>
-          <div class="item"><span class="lbl">Type</span><span id="metaType"></span></div>
-          <div class="item"><span class="lbl">Routes to</span><span id="metaTeam"></span></div>
-        </div>
-        <div id="pleaseInclude" class="please-include" style="display:none;">
-          <span class="pi-label">Please include in your description:</span>
-          <span class="pi-list" id="metaInputs"></span>
+      <div id="hintCard" class="meta-card">
+        <div class="please-include" style="border-top:none; padding-top:0; margin-top:0;">
+          <span class="pi-label">Please include:</span>
+          <span class="pi-list" id="hintBody"></span>
         </div>
       </div>
     </div>
 
     <div class="field">
       <label for="description">
-        Issue Description
-        <span id="descReq" class="req" style="display:none;">*</span>
-        <span id="descHint" class="hint">(optional when a specific issue is selected)</span>
+        Issue Description <span class="req">*</span>
       </label>
-      <textarea id="description" placeholder="What's happening? Include the affected campaign / ruleset / keyword names."></textarea>
+      <textarea id="description" required placeholder="What's happening? Include the affected campaign / ruleset / keyword names."></textarea>
     </div>
 
     <div class="field">
@@ -351,7 +341,27 @@
 </div>
 
 <script>
-const HIERARCHY = {"Rulesets": {"Campaign Ruleset": [{"id": "RS-CFG-001", "title": "Saved ruleset does not display all the conditions that were added during creation", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-CFG-002", "title": "Editing a paused ruleset does not unpause it after save", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-CFG-003", "title": "Editing a keyword ruleset does not show the existing keywords that were previously selected", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID; Keyword list"}, {"id": "RS-CFG-004", "title": "Cannot search or apply filters inside a campaign ruleset to select campaigns", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-CFG-005", "title": "Campaigns of the matching type do not appear when creating a keyword ruleset", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-CFG-006", "title": "Keywords do not appear for selection when creating a keyword ruleset", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name; Ruleset ID; Time window"}, {"id": "RS-CFG-007", "title": "Guardrail table appears empty for a brand even when guardrails should be configured", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-CFG-008", "title": "Ruleset performance view shows incorrect or stale data", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-CFG-009", "title": "Performance graph inside a ruleset is broken or shows wrong values", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-CFG-010", "title": "Keyword campaign override option not honoured during ruleset creation, leading to errors", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}], "Keyword Ruleset": [{"id": "RS-EXE-001", "title": "Ruleset does not trigger at all during the configured window", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-002", "title": "Ruleset triggers but the configured action (e.g., budget change, bid change) is not actually applied", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-003", "title": "Ruleset continues to trigger after being switched off or marked inactive", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-004", "title": "Ruleset does not behave as per the configured logic (output deviates from expected behaviour)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-005", "title": "Ruleset misfires — manual heat-map check confirms the action was wrong", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-006", "title": "Ruleset gives added spend instead of reducing it", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-007", "title": "Ruleset firing on the wrong time window (e.g., 'last day' picks up the last two days of data)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-008", "title": "Time-based rulesets execute earlier or later than the configured time-of-day", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-009", "title": "Sequential ruleset actions do not execute in the intended order", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-010", "title": "Start/Stop ruleset fails to execute", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-011", "title": "Set-Budget feature does not update budget as configured", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-012", "title": "MVP ruleset does not behave as configured", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-013", "title": "Out-of-budget (OOB) agent fails or produces no clear log trail", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-014", "title": "OSA rulesets do not work properly or trigger conditions disappear", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-015", "title": "Campaign ruleset failure leads to inconsistent or unintended spends", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-016", "title": "Ruleset switched off but campaign restarts after archiving", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "RS-EXE-017", "title": "Need clarity on whether configured budget update is one-time or perpetual (logic ambiguity)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name; Ruleset ID; Time window"}, {"id": "RS-EXE-018", "title": "Same keyword being targeted by multiple rulesets at different ranks causes ruleset collision", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name; Ruleset ID; Time window"}], "GC Managed — Ad Rank": [{"id": "GC-AR-001", "title": "GC Managed ad rank ruleset does not trigger at all", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "GC-AR-002", "title": "GC Managed ad rank ruleset stops triggering after a specific date or time", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "GC-AR-003", "title": "Achieved ad rank is higher than the configured target rank, especially in multi-city setups", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name; Ruleset ID; Affected campaign(s)"}, {"id": "GC-AR-004", "title": "Campaign does not reach Rank 1 / desired top rank despite ruleset being active", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name; Ruleset ID; Affected campaign(s)"}, {"id": "GC-AR-005", "title": "Top-slot ranking rule with bid increase/decrease (short-window, e.g., 30 mins) does not apply as configured", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name; Ruleset ID; Affected campaign(s)"}, {"id": "GC-AR-006", "title": "Performance tab inside GC Managed ad rank ruleset is broken or shows no data", "severity": "P1", "sla": 24, "type": "Data Discrepancy", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name; Ruleset ID; Affected campaign(s)"}, {"id": "GC-AR-007", "title": "Inconsistency between dashboard rank and platform-side / heat-map rank", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name; Ruleset ID; Affected campaign(s)"}, {"id": "GC-AR-008", "title": "Multi-city, multi-product ad rank rulesets behave inconsistently across cities", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name; Ruleset ID; Affected campaign(s)"}, {"id": "GC-AR-009", "title": "Crawl engine and bid engine show conflicting state for the same ruleset", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (GC Managed)", "inputs": "Ruleset Name; Ruleset ID; Affected campaign(s)"}]}, "Monitoring & Action": {"Campaign Creation": [{"id": "CMP-CRE-001", "title": "Campaign creation fails with a generic 'unable to launch' error", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Campaign Name / Campaign ID; Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-002", "title": "Campaign creation flow breaks at a specific step (Step 2 / Step 4 not opening or column-change bug)", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-003", "title": "CSV keyword upload during campaign creation fails or rejects valid files", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "CSV file used by client; Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-004", "title": "Cannot manually add keywords during campaign creation", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "CSV file used by client; Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-005", "title": "Cannot create SKU groups during campaign creation", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Campaign Name / Campaign ID; Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-006", "title": "Cannot edit cities in the edit-campaign flow", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Campaign Name / Campaign ID; Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-007", "title": "All cities show 100% category share during creation (incorrect default)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-008", "title": "Product validation fails during creation despite valid SKUs", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-009", "title": "Single-product campaign filter blocks expected keywords from being selected", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Keyword list; Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-010", "title": "Specific SKU is not available for bulk campaign creation despite a valid item ID", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-011", "title": "City × Product listing check fails or is missing during creation", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-012", "title": "Campaign cannot be launched on a specific platform (e.g., quick-commerce platform)", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Campaign Name / Campaign ID; Keyword list; Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-013", "title": "Keyword selection view inside campaign creation buffers indefinitely or is unusable on large selections", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-014", "title": "Suggested bid is missing for keywords during creation", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-015", "title": "Campaign creation success/failure is not logged at the campaign level", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Campaign Name / Campaign ID; Screenshot; Steps to reproduce"}, {"id": "CMP-CRE-016", "title": "Cannot see all eligible products during campaign creation", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Frontend (M&A)", "inputs": "Screenshot; Steps to reproduce"}], "Bulk Edit & Bulk Actions": [{"id": "CMP-BLK-001", "title": "Bulk keyword bid update (Non CSV) does not apply to selected keywords", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (Bulk Ops)", "inputs": "Keyword list; Screenshot; Timestamp / when occurred"}, {"id": "CMP-BLK-002", "title": "Bulk-selected campaigns cannot be enabled", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend (Bulk Ops)", "inputs": "CSV file used; Action attempted; Timestamp"}, {"id": "CMP-BLK-003", "title": "Bulk start of campaigns via CSV fails", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend (Bulk Ops)", "inputs": "Campaign Name / Campaign ID; CSV file used by client; Screenshot; Timestamp / when occurred"}, {"id": "CMP-BLK-004", "title": "Keyword bulk upload submitted from the CSV does not execute", "severity": "P2", "sla": 72, "type": "Data Discrepancy", "team": "Tech – Backend (Bulk Ops)", "inputs": "CSV file used by client; Screenshot; Timestamp / when occurred"}, {"id": "CMP-BLK-005", "title": "Keyword bulk action feature does not work properly", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend (Bulk Ops)", "inputs": "Keyword list; Screenshot; Timestamp / when occurred"}, {"id": "CMP-BLK-006", "title": "Bulk edit fails silently with no error and no success", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend (Bulk Ops)", "inputs": "Screenshot; Timestamp / when occurred"}, {"id": "CMP-BLK-007", "title": "Filters on tags cannot be applied even after clicking apply", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend (Bulk Ops)", "inputs": "Timestamp / when occurred"}], "M&A — Campaign / Product / Keyword & Filters": [{"id": "CMP-MAP-001", "title": "Newly created campaigns on the Blinkit do not get mapped into the dashboard", "severity": "P2", "sla": 72, "type": "Data Discrepancy", "team": "Tech – Data Engineering", "inputs": "Campaign Name / Campaign ID; Screenshot; Timestamp / when occurred"}, {"id": "CMP-MAP-002", "title": "Campaign is visible on the platform but does not appear in the dashboard", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "CMP-MAP-003", "title": "Campaigns from one brand workspace incorrectly land in another brand's workspace", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "CMP-MAP-004", "title": "Campaign data is not flowing into the account at all", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "CMP-MAP-005", "title": "Campaign data does not load on the campaigns page", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "CMP-MAP-006", "title": "Visual DIY and product-shelf campaigns are not mapped correctly in the campaign-type column", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "CMP-MAP-007", "title": "Auto-campaign bifurcation does not run for multiple workspace accounts", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "CMP-MAP-008", "title": "Campaign-tag mapping is incorrect or missing for some brands", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "CMP-MAP-009", "title": "Targeting-type filter is missing on the campaigns table", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "CMP-MAP-010", "title": "Duplicate campaigns appear in the M&A campaigns table with rulesets that no longer exist", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Campaign names; Creation timestamp; Brand workspace"}, {"id": "MA-001", "title": "Cannot uncheck an item once it has been checked in M&A", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Backend", "inputs": "Screenshot; Steps to reproduce"}, {"id": "MA-002", "title": "Suggested bid is missing in the Update Bid flow inside M&A", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Screenshot; Steps to reproduce"}, {"id": "MA-003", "title": "Total Issues count in the Product tab of M&A is incorrect", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Steps to reproduce; Screenshot; Time of observation"}, {"id": "MA-004", "title": "M&A page shows wrong spend values for a given month", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Screenshot; Steps to reproduce"}, {"id": "MA-005", "title": "Keywords tab in M&A does not pull complete data from the platform", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Keyword list; Screenshot; Steps to reproduce"}, {"id": "MA-006", "title": "Generic data issues inside M&A (mismatched numbers across sub-tabs)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Screenshot; Steps to reproduce"}, {"id": "MA-007", "title": "Bugs in campaign and keyword rulesets when clicking on the Performance section", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Backend", "inputs": "Ruleset Name / Ruleset ID; Screenshot; Steps to reproduce"}], "Performance Insights & Dashboards": [{"id": "PERF-001", "title": "Campaign Optimiser shows 'no data' even when campaigns are active", "severity": "P1", "sla": 24, "type": "Data Discrepancy", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-002", "title": "Only the Performers module loads inside Campaign Optimiser; other modules are blank", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-003", "title": "Low Performing Campaigns view is empty", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-004", "title": "Intermittent gaps under Performance tabs (data missing for some hours/days)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-005", "title": "Trends section does not load", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-006", "title": "Campaign visualisation reflects incorrect data versus the underlying warehouse", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-007", "title": "'High Spend' keywords list incorrectly includes very low spend keywords", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-008", "title": "City View shows NA for some brands", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-009", "title": "Direct RoAS is missing while Direct Revenue is visible", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-010", "title": "Insights data is not updated past a specific time", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-011", "title": "Latest data is not refreshed on the dashboard", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-012", "title": "Historical data before a specific cutoff date is not available", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-013", "title": "Multiple unrelated issues reported under one combined ticket (Performance Insights + Ruleset Logs)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-014", "title": "Direct RoAS filter / option is missing on keyword and campaign views", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-015", "title": "Custom views (e.g., sidebar custom views) do not appear or load for the user", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Screenshot"}, {"id": "PERF-016", "title": "Watchtower-style consolidated view of perf is missing", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Frontend", "inputs": "Module / view URL; Time of observation; Screenshot"}], "Notifications, Alerts & Logs": [{"id": "NOTIF-001", "title": "Alert says a campaign is on Hold while it is actually Active", "severity": "P2", "sla": 72, "type": "Bug", "team": "Alerts Owner (Utkarsh)", "inputs": "Alert ID; Affected campaign / ruleset; Time of alert"}, {"id": "NOTIF-002", "title": "Budget Pacing agent has no logs visible to the user", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Platform / Alerts", "inputs": "Ruleset Name / Ruleset ID"}, {"id": "NOTIF-003", "title": "Ruleset logs show empty values even when the ruleset has executed", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Platform / Alerts", "inputs": "Alert ID; Affected campaign / ruleset; Time of alert"}, {"id": "NOTIF-004", "title": "Notifications spam — too many low-value or duplicate alerts being fired", "severity": "P1", "sla": 24, "type": "Configuration", "team": "Tech – Platform / Alerts", "inputs": "Alert ID; Affected campaign / ruleset; Time of alert"}, {"id": "NOTIF-005", "title": "Campaign-creation success/failure is not logged at campaign level", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Platform / Alerts", "inputs": "Alert ID; Affected campaign / ruleset; Time of alert"}, {"id": "NOTIF-006", "title": "Coverage gaps in alerting — known issues are not generating alerts", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Platform / Alerts", "inputs": "Alert ID; Affected campaign / ruleset; Time of alert"}, {"id": "NOTIF-007", "title": "Platform-side errors (invalid actions) are not classified separately and clutter the Failed log", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Platform / Alerts", "inputs": "Alert ID; Affected campaign / ruleset; Time of alert"}, {"id": "NOTIF-008", "title": "Real-time competition / bid alerts are missing or delayed", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Platform / Alerts", "inputs": "Alert ID; Affected campaign / ruleset; Time of alert"}], "Reports, Downloads & Exports": [{"id": "RPT-001", "title": "Performance data download from the dashboard fails", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Steps to reproduce"}, {"id": "RPT-002", "title": "Cannot download full campaign data", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Steps to reproduce"}, {"id": "RPT-003", "title": "Cannot download the full-funnel report", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Steps to reproduce"}, {"id": "RPT-004", "title": "Custom view keyword dump download does not work", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Steps to reproduce"}, {"id": "RPT-005", "title": "Campaign run-time / exhaust-time download is not available", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Report type; Filters used; Browser & version"}, {"id": "RPT-006", "title": "Aggregated daily/monthly report generation fails or runs late", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Steps to reproduce"}, {"id": "RPT-007", "title": "Custom report shows values that differ from the warehouse", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Report type; Filters used; Browser & version"}, {"id": "RPT-008", "title": "Templated weekly/daily reports fail due to template version mismatch", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Report type; Filters used; Browser & version"}, {"id": "RPT-009", "title": "Download does not start at all for large date ranges (timeout / row limit not surfaced)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data / Reports", "inputs": "Steps to reproduce"}]}, "Keyword Exploration": {"Keyword Exploration": [{"id": "KW-001", "title": "Keyword drilldown shows no data at the campaign and product level, even when parent keyword has spend", "severity": "P1", "sla": 24, "type": "Data Discrepancy", "team": "Tech – Data Engineering", "inputs": "Keyword example(s); Expected vs. actual; Time window"}, {"id": "KW-002", "title": "Keyword Recommender download fails", "severity": "P1", "sla": 24, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Steps to reproduce"}, {"id": "KW-003", "title": "Keyword search-volume data is highly inaccurate compared to the platform", "severity": "P2", "sla": 72, "type": "Data Discrepancy", "team": "Tech – Data Engineering", "inputs": "Keyword example(s); Expected vs. actual; Time window"}, {"id": "KW-004", "title": "Keyword-level data and mapping are inconsistent (KW → campaign → product mapping incomplete)", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Keyword example(s); Expected vs. actual; Time window"}, {"id": "KW-005", "title": "Some keywords show spend but no SOV data", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Keyword example(s); Expected vs. actual; Time window"}, {"id": "KW-006", "title": "SOV data is unavailable alongside other metrics for selected keywords", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Keyword example(s); Expected vs. actual; Time window"}, {"id": "KW-007", "title": "Keyword relevancy column shows incorrect values and creates user confusion", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Keyword example(s); Expected vs. actual; Time window"}, {"id": "KW-008", "title": "Keyword exploration module does not load data", "severity": "P2", "sla": 72, "type": "Bug", "team": "Tech – Data Engineering", "inputs": "Keyword example(s); Expected vs. actual; Time window"}]}};
+const HIERARCHY = {
+  "Monitoring & Action": [
+    "Campaign Creation",
+    "Bulk Edit & Bulk Actions",
+    "Bulk Operations (CSV)",
+    "Change Logs",
+    "Reports, Downloads & Exports",
+    "M&A — Campaign / Product / Keyword & Filters"
+  ],
+  "Rulesets": [
+    "Campaign Ruleset",
+    "Keyword Ruleset"
+  ],
+  "Portfolio & Tags": [
+    "Portfolio Management",
+    "Tag Management"
+  ],
+  "Keyword Exploration": [
+    "Keyword Exploration"
+  ]
+};
 const TARGET_LIST_ID = '901413585324'; // Bugs and DaaS › Dogfooding › Bug backlog
 
 // Custom field IDs on the Bug backlog list
@@ -378,22 +388,36 @@ const PLATFORM_OPT = {
 };
 // Form Sub_Module → { name, opt } for ClickUp Perf_Module
 const PERF_MODULE_MAP = {
-  'Campaign Ruleset':                              { name: 'Campaign Ruleset',     opt: '8da16f3d-fe28-40cb-b81a-e962ff0e477a' },
-  'Keyword Ruleset':                               { name: 'KW Ruleset',           opt: '816ad703-52b6-4e37-bcc1-e70eeaa10f4e' },
-  'GC Managed — Ad Rank':                          { name: 'Campaign Ruleset',     opt: '8da16f3d-fe28-40cb-b81a-e962ff0e477a' },
-  'Campaign Creation':                             { name: 'Campaign Creation',    opt: '73940ddf-55a5-4de7-aa0c-b3e9e13b99cd' },
-  'Bulk Edit & Bulk Actions':                      { name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
-  'M&A — Campaign / Product / Keyword & Filters':  { name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
-  'Performance Insights & Dashboards':             { name: 'Performance Insights', opt: 'de916aba-5a66-432e-a88c-394f4f71bbe6' },
-  'Notifications, Alerts & Logs':                  { name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
-  'Reports, Downloads & Exports':                  { name: 'Performance Insights', opt: 'de916aba-5a66-432e-a88c-394f4f71bbe6' },
-  'Keyword Exploration':                           { name: 'Keyword Exploration',  opt: '0a9885df-3b71-489a-90f8-e2971cdd973b' },
+  'Campaign Ruleset':                            { name: 'Campaign Ruleset',     opt: '8da16f3d-fe28-40cb-b81a-e962ff0e477a' },
+  'Keyword Ruleset':                             { name: 'KW Ruleset',           opt: '816ad703-52b6-4e37-bcc1-e70eeaa10f4e' },
+  'Campaign Creation':                           { name: 'Campaign Creation',    opt: '73940ddf-55a5-4de7-aa0c-b3e9e13b99cd' },
+  'Bulk Edit & Bulk Actions':                    { name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
+  'Bulk Operations (CSV)':                       { name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
+  'Change Logs':                                 { name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
+  'M&A — Campaign / Product / Keyword & Filters':{ name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
+  'Reports, Downloads & Exports':                { name: 'Performance Insights', opt: 'de916aba-5a66-432e-a88c-394f4f71bbe6' },
+  'Portfolio Management':                        { name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
+  'Tag Management':                              { name: 'Monitoring & Action',  opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
+  'Keyword Exploration':                         { name: 'Keyword Exploration',  opt: '0a9885df-3b71-489a-90f8-e2971cdd973b' },
 };
-// Fallbacks at the feature-bucket level when no sub-module is set
-const PERF_MODULE_BUCKET_FALLBACK = {
-  'Rulesets':            { name: 'Campaign Ruleset',    opt: '8da16f3d-fe28-40cb-b81a-e962ff0e477a' },
-  'Monitoring & Action': { name: 'Monitoring & Action', opt: '65e0c717-2043-498b-9e2d-2b8f0eb56f86' },
-  'Keyword Exploration': { name: 'Keyword Exploration', opt: '0a9885df-3b71-489a-90f8-e2971cdd973b' },
+
+// Per-sub-module guidance shown to the user before they fill out the description
+const SUB_MODULE_HINT = {
+  // Rulesets — guidance for finding the Ruleset ID
+  'Campaign Ruleset':                            'the **Ruleset Name** and **Ruleset ID** (open the ruleset in the dashboard — the ID is in the URL after `/ruleset/`), plus a screenshot showing the issue.',
+  'Keyword Ruleset':                             'the **Ruleset Name** and **Ruleset ID** (open the ruleset in the dashboard — the ID is in the URL after `/ruleset/`), plus a screenshot showing the issue.',
+  // Monitoring & Action
+  'Campaign Creation':                           'the **Campaign Name / Campaign ID** and a **screenshot** showing the failure or unexpected behaviour.',
+  'Bulk Edit & Bulk Actions':                    'the **action attempted**, a **screenshot**, and the **timestamp** (when it occurred).',
+  'Bulk Operations (CSV)':                       'the **CSV file** you used (attach below) and the **timestamp** when you ran the operation.',
+  'Change Logs':                                 'a **screenshot** of the change log entry and the **timestamp** of the change.',
+  'Reports, Downloads & Exports':                'the **report type**, **filters used**, and a **screenshot** of the failure.',
+  'M&A — Campaign / Product / Keyword & Filters':'the affected **Campaign / Product / Keyword** name(s), **filters applied**, and a **screenshot**.',
+  // Portfolio & Tags
+  'Portfolio Management':                        'the **Portfolio name** and a **screenshot** showing the issue.',
+  'Tag Management':                              'the **Tag name** and a **screenshot** showing the issue.',
+  // Keyword Exploration
+  'Keyword Exploration':                         'the **keyword example(s)**, **expected vs. actual** values, and the **time window** you were viewing.',
 };
 
 // CSM display name → ClickUp user ID (null = not yet in the ClickUp workspace; will be mentioned in description only)
@@ -412,88 +436,46 @@ const PERF_MODULE_TAG = 'perf. module';
 
 const fbSel = document.getElementById('featureBucket');
 const smSel = document.getElementById('subModule');
-const itSel = document.getElementById('issueTitle');
-const meta = document.getElementById('metaCard');
+const hintCard = document.getElementById('hintCard');
+const hintBody = document.getElementById('hintBody');
+
+// Render Markdown-ish bold (**x**) and inline code (`x`) into safe HTML
+function renderHint(text) {
+  const esc = s => s.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+  return esc(text)
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code style="background:rgba(85,119,255,0.10); padding:1px 5px; border-radius:4px; font-size:11px;">$1</code>');
+}
+
+function updateHintCard() {
+  const sub = smSel.value;
+  if (sub && SUB_MODULE_HINT[sub]) {
+    hintBody.innerHTML = renderHint(SUB_MODULE_HINT[sub]);
+    hintCard.classList.add('visible');
+  } else {
+    hintCard.classList.remove('visible');
+  }
+}
 
 Object.keys(HIERARCHY).forEach(fb => {
   const opt = document.createElement('option');
   opt.value = fb; opt.textContent = fb;
   fbSel.appendChild(opt);
 });
-const otherOpt = document.createElement('option');
-otherOpt.value = '__other__'; otherOpt.textContent = 'Other / Not in this list';
-fbSel.appendChild(otherOpt);
 
 fbSel.addEventListener('change', () => {
-  smSel.innerHTML = '<option value="">Select sub-module…</option>';
-  itSel.innerHTML = '<option value="">Select specific issue…</option>';
-  meta.classList.remove('visible');
-  if (!fbSel.value || fbSel.value === '__other__') { smSel.disabled = true; itSel.disabled = true; if (typeof updateDescriptionRequirement === 'function') updateDescriptionRequirement(); return; }
-  const sms = HIERARCHY[fbSel.value];
-  Object.keys(sms).forEach(sm => {
+  smSel.innerHTML = '<option value="" disabled selected hidden>Select sub-module…</option>';
+  hintCard.classList.remove('visible');
+  if (!fbSel.value) { smSel.disabled = true; return; }
+  HIERARCHY[fbSel.value].forEach(sm => {
     const opt = document.createElement('option');
     opt.value = sm; opt.textContent = sm;
     smSel.appendChild(opt);
   });
   smSel.disabled = false;
-  itSel.disabled = true;
 });
 
-smSel.addEventListener('change', () => {
-  itSel.innerHTML = '<option value="">Select specific issue…</option>';
-  meta.classList.remove('visible');
-  if (!smSel.value) { itSel.disabled = true; if (typeof updateDescriptionRequirement === 'function') updateDescriptionRequirement(); return; }
-  HIERARCHY[fbSel.value][smSel.value].forEach(i => {
-    const opt = document.createElement('option');
-    opt.value = i.id;
-    opt.textContent = `[${i.severity}] ${i.title}`;
-    opt.dataset.title = i.title;
-    opt.dataset.sla = i.sla;
-    opt.dataset.type = i.type;
-    opt.dataset.team = i.team;
-    opt.dataset.inputs = i.inputs || '';
-    opt.dataset.severity = i.severity;
-    itSel.appendChild(opt);
-  });
-  const other = document.createElement('option');
-  other.value = '__other__'; other.textContent = 'Other / Not listed here';
-  itSel.appendChild(other);
-  itSel.disabled = false;
-});
-
-function updateDescriptionRequirement() {
-  // Description is mandatory only when no specific issue is matched (i.e. "Other" path)
-  const isOther = !itSel.value || itSel.value === '__other__' || fbSel.value === '__other__';
-  document.getElementById('descReq').style.display = isOther ? 'inline' : 'none';
-  document.getElementById('descHint').textContent = isOther
-    ? '(required when "Other" is selected)'
-    : '(optional when a specific issue is selected)';
-}
-
-itSel.addEventListener('change', () => {
-  updateDescriptionRequirement();
-  if (!itSel.value || itSel.value === '__other__') { meta.classList.remove('visible'); return; }
-  const opt = itSel.options[itSel.selectedIndex];
-  document.getElementById('metaTitle').textContent = opt.dataset.title;
-  const sevEl = document.getElementById('metaSev');
-  sevEl.textContent = opt.dataset.severity;
-  sevEl.className = 'badge ' + opt.dataset.severity.toLowerCase();
-  document.getElementById('metaSla').textContent = opt.dataset.sla + 'h';
-  document.getElementById('metaType').textContent = opt.dataset.type;
-  document.getElementById('metaTeam').textContent = opt.dataset.team;
-  // Render "Please include in your description: X · Y · Z"
-  const rawInputs = (opt.dataset.inputs || '').trim();
-  const piWrap = document.getElementById('pleaseInclude');
-  const piList = document.getElementById('metaInputs');
-  if (rawInputs) {
-    const parts = rawInputs.split(/[;,]/).map(s => s.trim()).filter(Boolean);
-    piList.innerHTML = parts.map(p => '<strong>' + p.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) + '</strong>').join(' · ');
-    piWrap.style.display = 'block';
-  } else {
-    piWrap.style.display = 'none';
-  }
-  meta.classList.add('visible');
-});
+smSel.addEventListener('change', updateHintCard);
 
 document.querySelectorAll('.platform-card').forEach(card => {
   card.addEventListener('click', () => {
@@ -529,8 +511,6 @@ fileInput.addEventListener('change', e => {
 ['dragenter','dragover'].forEach(ev => fileDrop.addEventListener(ev, e => { e.preventDefault(); fileDrop.classList.add('drag'); }));
 ['dragleave','drop'].forEach(ev => fileDrop.addEventListener(ev, e => { e.preventDefault(); fileDrop.classList.remove('drag'); }));
 fileDrop.addEventListener('drop', e => { for (const f of e.dataTransfer.files) attachedFiles.push(f); refreshFileList(); });
-
-const SEV_TO_PRIORITY = { 'P0': 'urgent', 'P1': 'high', 'P2': 'normal' };
 
 // Read a File as base64 (without the data: prefix)
 function fileToBase64(file) {
@@ -574,47 +554,23 @@ document.getElementById('issueForm').addEventListener('submit', async e => {
   if (!client)         { showError(status, 'Please enter the brand name.'); return; }
   if (!platform)       { showError(status, 'Please select a platform.');    return; }
   if (!csmName)        { showError(status, 'Please select a CSM.');         return; }
-  if (!fbSel.value)    { showError(status, 'Please select an issue category.'); return; }
-
-  // Specific-issue match (or null when "Other" / not picked)
-  let issueMeta = null;
-  if (itSel.value && itSel.value !== '__other__') {
-    const opt = itSel.options[itSel.selectedIndex];
-    issueMeta = {
-      issue_id: itSel.value,
-      title: opt.dataset.title,
-      severity: opt.dataset.severity,
-      sla: opt.dataset.sla,
-      type: opt.dataset.type,
-      team: opt.dataset.team,
-      inputs: opt.dataset.inputs,
-    };
-  }
-  // Description is required ONLY when there is no library match (Other path)
-  if (!issueMeta && !desc) { showError(status, 'Please describe the issue (required when "Other" is selected).'); return; }
+  if (!fbSel.value)    { showError(status, 'Please select a feature area.'); return; }
+  if (!smSel.value)    { showError(status, 'Please select a sub-module.'); return; }
+  if (!desc)           { showError(status, 'Please describe the issue.'); return; }
 
   const steps = document.getElementById('steps').value.trim();
 
   // ===== Task name =====
-  const titlePart = issueMeta
-    ? issueMeta.title
-    : (desc ? (desc.length > 70 ? desc.slice(0, 67) + '…' : desc) : 'New issue');
+  const titlePart = desc.length > 70 ? desc.slice(0, 67) + '…' : desc;
   const taskName = `[${client}] ${titlePart} — ${platform.value}`;
 
   // ===== Description (markdown) — also includes Steps to Reproduce =====
   const mdParts = [];
-  if (issueMeta) {
-    mdParts.push(`**Library Issue:** \`${issueMeta.issue_id}\` — ${issueMeta.title}`);
-    mdParts.push(`**Severity:** ${issueMeta.severity}  ·  **SLA:** ${issueMeta.sla}h  ·  **Type:** ${issueMeta.type}`);
-    if (issueMeta.inputs) mdParts.push(`**Library asks for:** ${issueMeta.inputs.split(/[;,]/).map(s => s.trim()).filter(Boolean).join(' · ')}`);
-  } else {
-    mdParts.push(`**Library Issue:** Other / Custom (not in library)`);
-  }
   mdParts.push(`**Brand:** ${client}  ·  **Platform:** ${platform.value}  ·  **CSM:** ${csmName}  ·  **Submitted:** ${new Date().toLocaleString()}`);
-  mdParts.push(`**Category:** ${fbSel.value === '__other__' ? 'Other' : fbSel.value}${smSel.value ? ' → ' + smSel.value : ''}`);
+  mdParts.push(`**Category:** ${fbSel.value} → ${smSel.value}`);
   mdParts.push('');
   mdParts.push('## Description (from client)');
-  mdParts.push(desc || '_No additional description provided. Issue selected from library — see library entry for context._');
+  mdParts.push(desc);
   if (steps) {
     mdParts.push('');
     mdParts.push('## Steps to Reproduce');
@@ -635,13 +591,8 @@ document.getElementById('issueForm').addEventListener('submit', async e => {
   customFields.push({ id: FIELDS.RAISED_BY_CLIENT, value: OPTIONS.RAISED_BY_CLIENT_YES });
   customFields.push({ id: FIELDS.TEAMS,            value: OPTIONS.TEAMS_PERF_MKT });
 
-  // Perf Module — derived from selected sub-module (if any), else fallback by feature bucket
-  let perfModule = null;
-  if (smSel.value && PERF_MODULE_MAP[smSel.value]) {
-    perfModule = PERF_MODULE_MAP[smSel.value];
-  } else if (PERF_MODULE_BUCKET_FALLBACK[fbSel.value]) {
-    perfModule = PERF_MODULE_BUCKET_FALLBACK[fbSel.value];
-  }
+  // Perf Module — derived from selected sub-module
+  const perfModule = smSel.value ? PERF_MODULE_MAP[smSel.value] : null;
   if (perfModule) customFields.push({ id: FIELDS.PERF_MODULE, value: perfModule.opt });
 
   // Platforms Multi Select — labels custom field accepts a plain array of option IDs
@@ -670,7 +621,6 @@ document.getElementById('issueForm').addEventListener('submit', async e => {
     markdown_description: md,
     due_date: dueDate,
     custom_fields: customFields,
-    priority: issueMeta ? (SEV_TO_PRIORITY[issueMeta.severity] || 'normal') : 'normal',
     tags: tags,
     assignees: assignees,
   };
@@ -743,9 +693,8 @@ document.getElementById('issueForm').addEventListener('submit', async e => {
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('issueForm').reset();
   document.querySelectorAll('.platform-card').forEach(c => c.classList.remove('selected'));
-  smSel.innerHTML = '<option value="">Select sub-module…</option>'; smSel.disabled = true;
-  itSel.innerHTML = '<option value="">Select specific issue…</option>'; itSel.disabled = true;
-  meta.classList.remove('visible');
+  smSel.innerHTML = '<option value="" disabled selected hidden>Select sub-module…</option>'; smSel.disabled = true;
+  hintCard.classList.remove('visible');
   attachedFiles = []; refreshFileList();
   document.getElementById('status').className = 'status';
   document.getElementById('status').textContent = '';
